@@ -33,7 +33,7 @@ def wait_for_motors_to_catch_up(joy, sleep=None):
     if sleep:
         time.sleep(sleep)
     else:
-        time.sleep(0.1)
+        time.sleep(0.7)
 
 def run_input_debugger():
     joy = xbox.Joystick()
