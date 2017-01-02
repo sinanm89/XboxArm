@@ -27,8 +27,9 @@ def init_pwm():
     pwm.setPWMFreq(60)
     return pwm
 
-def wait_for_motors_to_catch_up():
-    time.sleep(1)
+def wait_for_motors_to_catch_up(joy):
+    joy.refresh()
+    # time.sleep(1)
 
 def run_input_debugger():
     joy = xbox.Joystick()
@@ -37,7 +38,7 @@ def run_input_debugger():
     # Loop until back button is pressed
     pwm = init_pwm()
     while not joy.Back():
-        wait_for_motors_to_catch_up()
+        wait_for_motors_to_catch_up(joy)
         # Show connection status
         if not joy.connected():
             print "WTF",
