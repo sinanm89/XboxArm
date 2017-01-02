@@ -28,7 +28,7 @@ def init_pwm():
     pwm.setPWMFreq(60)
     return pwm
 
-def wait_for_motors_to_catch_up(joy, sleep):
+def wait_for_motors_to_catch_up(joy, sleep=None):
     # joy.refresh()
     if sleep:
         time.sleep(sleep)
