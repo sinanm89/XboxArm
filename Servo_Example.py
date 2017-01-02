@@ -11,6 +11,7 @@ from Adafruit_PWM_Servo_Driver.Adafruit_PWM_Servo_Driver import PWM
 servoMin = 150  # Min pulse length out of 4096
 servoMax = 600  # Max pulse length out of 4096
 
+one_tick = (servoMax - servoMin) / 2
 # def setServoPulse(channel, pulse):
 #     pulseLength = 1000000                   # 1,000,000 us per second
 #     pulseLength /= 60                       # 60 Hz
@@ -27,9 +28,12 @@ def init_pwm():
     pwm.setPWMFreq(60)
     return pwm
 
-def wait_for_motors_to_catch_up(joy):
-    joy.refresh()
-    # time.sleep(1)
+def wait_for_motors_to_catch_up(joy, sleep):
+    # joy.refresh()
+    if sleep:
+        time.sleep(sleep)
+    else:
+        time.sleep(0.1)
 
 def run_input_debugger():
     joy = xbox.Joystick()
@@ -45,7 +49,9 @@ def run_input_debugger():
 
         if joy.A():
             # Change speed of continuous servo on channel O
+            sleep = one_tick
             pwm.setPWM(0, 0, servoMin)
+            wait_for_motors_to_catch_up(joy, sleep)
 
         if joy.B():
             print "B",
