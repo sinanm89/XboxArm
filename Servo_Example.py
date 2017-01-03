@@ -73,6 +73,19 @@ def run_input_debugger():
         if joy.dpadLeft():
             print "L",
 
+        if joy.rightX():
+            import ipdb; ipdb.set_trace()
+            print "Right Y axis move",
+
+        if joy.rightY():
+            print "Right X axis move",
+
+        if joy.leftX():
+            print "Left X axis move",
+
+        if joy.leftY():
+            print "Left Y axis move",
+
         if joy.dpadRight():
             print "R",
 
