@@ -51,11 +51,14 @@ def run_input_debugger():
     time.sleep(0.6)
     pwm.setPWM(0, 0, servoMin + 50)
     time.sleep(0.6)
-    while not joy.Back():
+    while True:
         # wait_for_motors_to_catch_up(joy)
         # Show connection status
         if not joy.connected():
             print "WTF",
+
+        if joy.Back():
+            break
 
         if joy.A():
             # Change speed of continuous servo on channel O
@@ -93,7 +96,6 @@ def run_input_debugger():
             print "L",
 
         if joy.rightX():
-            import ipdb; ipdb.set_trace()
             print "Right Y axis move",
 
         if joy.rightY():
