@@ -24,7 +24,7 @@ one_tick = (servoMax - servoMin) / 2
 #     pulse /= pulseLength
 #     return pulseLength, channel
 sDelta = servoMax - servoMin
-delta_val = sDelta / 60
+delta_val = sDelta / 120
 
 
 def init_pwm():
