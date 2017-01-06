@@ -44,6 +44,25 @@ def wait_for_motors_to_catch_up(joy, sleep=None):
         time.sleep(joy.refreshDelay + (joy.refreshDelay / 2))
 
 
+def set_pos(pos, inc=None, dec=None):
+    """Set the logical position."""
+    _temp_pos = pos
+    if inc:
+        _temp_pos = pos + delta_val
+    elif dec:
+        _temp_pos = pos - delta_val
+    else:
+        _temp_pos = servoMin
+
+    if _temp_pos >= servoMax:
+        pos = servoMax
+    if _temp_pos <= servoMin:
+        pos = servoMin
+    else:
+        pos = _temp_pos
+    return pos
+
+
 def run_input_debugger():
     """Run the main program."""
     joy = xbox.Joystick()
@@ -69,32 +88,20 @@ def run_input_debugger():
             break
 
         if joy.A():
-            # Change speed of continuous servo on channel O
             print "A",
-            pos += delta_val
-            # print pos,
-            pwm.setPWM(0, 0, pos)
-            # wait_for_motors_to_catch_up(joy, 0.2)
+            pos = set_pos(pos=pos, inc=True)
 
         if joy.B():
             print "B",
-            pos -= delta_val
-            # print pos,
-            pwm.setPWM(0, 0, pos)
+            pos = set_pos(pos=pos, dec=True)
 
         if joy.X():
-            # Change speed of continuous servo on channel O
             print "X",
-            pos = 0
-            pwm.setPWM(0, 0, servoMin)
+            set_pos(0)
 
         if joy.Y():
-            print "Y (Reset)",
-            pos = 0
-            time.sleep(1)
-            pwm.setPWM(0, 0, servoMax)
-            time.sleep(1)
-            pwm.setPWM(0, 0, servoMin)
+            print "Y",
+            pos = set_pos(pos=1000, inc=True)
 
         if joy.dpadUp():
             print "U",
