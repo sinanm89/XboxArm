@@ -52,7 +52,7 @@ def run_input_debugger():
     pwm.setPWM(0, 0, servoMin + 50)
     time.sleep(0.6)
     while not joy.Back():
-        wait_for_motors_to_catch_up(joy)
+        # wait_for_motors_to_catch_up(joy)
         # Show connection status
         if not joy.connected():
             print "WTF",
