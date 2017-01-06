@@ -85,20 +85,27 @@ def run_input_debugger():
             break
 
         if joy.A():
+            print joy.reading + "\r"
             print "A",
             pos = set_pos(pos=pos, inc=True)
 
         if joy.B():
+            print joy.reading + "\r"
             print "B",
             pos = set_pos(pos=pos, dec=True)
 
         if joy.X():
+            print joy.reading + "\r"
             print "X",
-            set_pos(0, dec=True)
+            pos = set_pos(0, dec=True)
 
         if joy.Y():
+            print joy.reading + "\r"
             print "Y",
             pos = set_pos(pos=1000, inc=True)
+
+        else:
+            print joy.reading + "\r"
 
         if joy.dpadUp():
             print "U",
@@ -123,6 +130,8 @@ def run_input_debugger():
 
         if joy.dpadRight():
             print "R",
+
+
 
     # Close out when done
     joy.close()
