@@ -46,20 +46,17 @@ def wait_for_motors_to_catch_up(joy, sleep=None):
 
 def set_pos(pos, inc=None, dec=None):
     """Set the logical position."""
-    _temp_pos = pos
+    _temp_pos = servoMin
     if inc:
         _temp_pos = pos + delta_val
     elif dec:
         _temp_pos = pos - delta_val
-    else:
-        _temp_pos = servoMin
 
     if _temp_pos >= servoMax:
         pos = servoMax
     if _temp_pos <= servoMin:
         pos = servoMin
-    else:
-        pos = _temp_pos
+    print pos
     return pos
 
 
@@ -97,7 +94,7 @@ def run_input_debugger():
 
         if joy.X():
             print "X",
-            set_pos(0)
+            set_pos(0, dec=True)
 
         if joy.Y():
             print "Y",
