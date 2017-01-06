@@ -60,13 +60,13 @@ def run_input_debugger():
         if joy.A():
             # Change speed of continuous servo on channel O
             print "A",
-            pos += halfTick
+            pos += servoMin
             pwm.setPWM(0, 0, pos)
             # wait_for_motors_to_catch_up(joy, 0.2)
 
         if joy.B():
             print "B",
-            pos -= halfTick
+            pos -= servoMin
             pwm.setPWM(0, 0, pos)
 
         if joy.X():
