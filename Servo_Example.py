@@ -1,4 +1,4 @@
-#!/usr/bin/python
+"""Xbox arm controller package."""
 import xbox
 import time
 from Adafruit_PWM_Servo_Driver.Adafruit_PWM_Servo_Driver import PWM
@@ -28,7 +28,7 @@ increaser = sDelta / 60
 
 
 def init_pwm():
-    """initialize the pwm."""
+    """Initialize the pwm."""
     pwm = PWM(0x40)  # Initialise the PWM device using the default address
     # pwm.setPWM(channel, 0, pulse)
     pwm.setPWMFreq(60)
@@ -36,6 +36,7 @@ def init_pwm():
 
 
 def wait_for_motors_to_catch_up(joy, sleep=None):
+    """Wait for the motors to move."""
     # joy.refresh()
     if sleep:
         time.sleep(sleep)
@@ -44,6 +45,7 @@ def wait_for_motors_to_catch_up(joy, sleep=None):
 
 
 def run_input_debugger():
+    """Run the main program."""
     joy = xbox.Joystick()
 
     print "Xbox controller sample: Press Back button to exit"
@@ -52,10 +54,11 @@ def run_input_debugger():
     # pos = servoMin
     pwm.setPWM(0, 0, servoMin)
     time.sleep(0.6)
-    pwm.setPWM(0, 0, servoMin*2)
+    pwm.setPWM(0, 0, servoMin * 2)
     time.sleep(0.6)
     pwm.setPWM(0, 0, servoMax)
     time.sleep(0.6)
+    pos = 0
     while True:
         # wait_for_motors_to_catch_up(joy)
         # Show connection status
@@ -68,7 +71,6 @@ def run_input_debugger():
         if joy.A():
             # Change speed of continuous servo on channel O
             print "A",
-
             pos += sDelta
             # print pos,
             pwm.setPWM(0, 0, sDelta)
