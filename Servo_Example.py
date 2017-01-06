@@ -11,6 +11,9 @@ from Adafruit_PWM_Servo_Driver.Adafruit_PWM_Servo_Driver import PWM
 servoMin = 150  # Min pulse length out of 4096
 servoMax = 600  # Max pulse length out of 4096
 
+oneTick = 50
+halfTick = oneTick / 25
+
 one_tick = (servoMax - servoMin) / 2
 # def setServoPulse(channel, pulse):
 #     pulseLength = 1000000                   # 1,000,000 us per second
@@ -33,7 +36,7 @@ def wait_for_motors_to_catch_up(joy, sleep=None):
     if sleep:
         time.sleep(sleep)
     else:
-        time.sleep(0.7)
+        time.sleep(0.1)
 
 def run_input_debugger():
     joy = xbox.Joystick()
@@ -41,6 +44,7 @@ def run_input_debugger():
     print "Xbox controller sample: Press Back button to exit"
     # Loop until back button is pressed
     pwm = init_pwm()
+    pos = servoMin
     while not joy.Back():
         wait_for_motors_to_catch_up(joy)
         # Show connection status
@@ -50,11 +54,14 @@ def run_input_debugger():
         if joy.A():
             # Change speed of continuous servo on channel O
             print "B",
-            pwm.setPWM(0, 0, servoMin)
+            pos += halfTick
+            pwm.setPWM(0, 0, pos)
             # wait_for_motors_to_catch_up(joy, 0.2)
 
         if joy.B():
             print "B",
+            pos -= halfTick
+            pwm.setPWM(0, 0, pos)
 
         if joy.X():
             # Change speed of continuous servo on channel O
@@ -62,7 +69,11 @@ def run_input_debugger():
             pwm.setPWM(0, 0, servoMax)
 
         if joy.Y():
-            print "Y",
+            print "Y (Reset)",
+            time.sleep(1)
+            pwm.setPWM(0, 0, servoMax)
+            time.sleep(1)
+            pwm.setPWM(0, 0, servoMin)
 
         if joy.dpadUp():
             print "U",
