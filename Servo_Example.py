@@ -24,7 +24,7 @@ one_tick = (servoMax - servoMin) / 2
 #     pulse /= pulseLength
 #     return pulseLength, channel
 sDelta = servoMax - servoMin
-increaser = sDelta / 60
+delta_val = sDelta / 60
 
 
 def init_pwm():
@@ -71,24 +71,26 @@ def run_input_debugger():
         if joy.A():
             # Change speed of continuous servo on channel O
             print "A",
-            pos += sDelta
+            pos += delta_val
             # print pos,
-            pwm.setPWM(0, 0, sDelta)
+            pwm.setPWM(0, 0, pos)
             # wait_for_motors_to_catch_up(joy, 0.2)
 
         if joy.B():
             print "B",
-            # pos -= servoMin
+            pos -= delta_val
             # print pos,
-            pwm.setPWM(0, 0, servoMin)
+            pwm.setPWM(0, 0, pos)
 
         if joy.X():
             # Change speed of continuous servo on channel O
             print "X",
-            pwm.setPWM(0, 0, servoMax)
+            pos = 0
+            pwm.setPWM(0, 0, servoMin)
 
         if joy.Y():
             print "Y (Reset)",
+            pos = 0
             time.sleep(1)
             pwm.setPWM(0, 0, servoMax)
             time.sleep(1)
