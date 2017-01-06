@@ -25,18 +25,22 @@ one_tick = (servoMax - servoMin) / 2
 #     pulse /= pulseLength
 #     return pulseLength, channel
 
+
 def init_pwm():
+    """initialize the pwm"""
     pwm = PWM(0x40)  # Initialise the PWM device using the default address
     # pwm.setPWM(channel, 0, pulse)
     pwm.setPWMFreq(60)
     return pwm
+
 
 def wait_for_motors_to_catch_up(joy, sleep=None):
     # joy.refresh()
     if sleep:
         time.sleep(sleep)
     else:
-        time.sleep(0.6)
+        time.sleep(joy.refreshDelay + (joy.refreshDelay / 2))
+
 
 def run_input_debugger():
     joy = xbox.Joystick()
@@ -44,12 +48,12 @@ def run_input_debugger():
     print "Xbox controller sample: Press Back button to exit"
     # Loop until back button is pressed
     pwm = init_pwm()
-    pos = servoMin
+    # pos = servoMin
     pwm.setPWM(0, 0, servoMin)
     time.sleep(0.6)
-    pwm.setPWM(0, 0, servoMax)
+    pwm.setPWM(0, 0, servoMin*2)
     time.sleep(0.6)
-    pwm.setPWM(0, 0, servoMin + 50)
+    pwm.setPWM(0, 0, servoMax)
     time.sleep(0.6)
     while True:
         # wait_for_motors_to_catch_up(joy)
@@ -63,16 +67,16 @@ def run_input_debugger():
         if joy.A():
             # Change speed of continuous servo on channel O
             print "A",
-            pos += servoMin
-            print pos,
-            pwm.setPWM(0, 0, pos)
+            # pos += servoMin
+            # print pos,
+            pwm.setPWM(0, 0, servoMax)
             # wait_for_motors_to_catch_up(joy, 0.2)
 
         if joy.B():
             print "B",
-            pos -= servoMin
-            print pos,
-            pwm.setPWM(0, 0, pos)
+            # pos -= servoMin
+            # print pos,
+            pwm.setPWM(0, 0, servoMin)
 
         if joy.X():
             # Change speed of continuous servo on channel O
