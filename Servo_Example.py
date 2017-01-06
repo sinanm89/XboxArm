@@ -45,6 +45,12 @@ def run_input_debugger():
     # Loop until back button is pressed
     pwm = init_pwm()
     pos = servoMin
+    pwm.setPWM(0, 0, servoMin)
+    time.sleep(0.6)
+    pwm.setPWM(0, 0, servoMax)
+    time.sleep(0.6)
+    pwm.setPWM(0, 0, servoMin + 50)
+    time.sleep(0.6)
     while not joy.Back():
         wait_for_motors_to_catch_up(joy)
         # Show connection status
