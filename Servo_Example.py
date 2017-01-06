@@ -1,12 +1,11 @@
 #!/usr/bin/python
 import xbox
 import time
-import math
 from Adafruit_PWM_Servo_Driver.Adafruit_PWM_Servo_Driver import PWM
 
 # Initialise the PWM device using the default address
 # Note if you'd like more debug output you can instead run:
-#pwm = PWM(0x40, debug=True)
+# pwm = PWM(0x40, debug=True)
 
 servoMin = 150  # Min pulse length out of 4096
 servoMax = 600  # Max pulse length out of 4096
@@ -24,10 +23,12 @@ one_tick = (servoMax - servoMin) / 2
 #     pulse *= 1000
 #     pulse /= pulseLength
 #     return pulseLength, channel
+sDelta = servoMax - servoMin
+increaser = sDelta / 60
 
 
 def init_pwm():
-    """initialize the pwm"""
+    """initialize the pwm."""
     pwm = PWM(0x40)  # Initialise the PWM device using the default address
     # pwm.setPWM(channel, 0, pulse)
     pwm.setPWMFreq(60)
@@ -67,9 +68,10 @@ def run_input_debugger():
         if joy.A():
             # Change speed of continuous servo on channel O
             print "A",
-            # pos += servoMin
+
+            pos += sDelta
             # print pos,
-            pwm.setPWM(0, 0, servoMax)
+            pwm.setPWM(0, 0, sDelta)
             # wait_for_motors_to_catch_up(joy, 0.2)
 
         if joy.B():
