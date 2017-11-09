@@ -70,7 +70,7 @@ def run_input_debugger():
     # pos = servoMin
     pwm.setPWM(0, 0, servoMin)
     time.sleep(0.6)
-    pwm.setPWM(0, 0, servoMin * 2)
+    pwm.setPWM(0, 0, servoMin + 225)
     time.sleep(0.6)
     pwm.setPWM(0, 0, servoMax)
     time.sleep(0.6)
@@ -85,27 +85,22 @@ def run_input_debugger():
             break
 
         if joy.A():
-            print joy.reading + "\r"
+            joy.reading
             print "A",
+
             pos = set_pos(pos=pos, inc=True)
 
         if joy.B():
-            print joy.reading + "\r"
             print "B",
             pos = set_pos(pos=pos, dec=True)
 
         if joy.X():
-            print joy.reading + "\r"
             print "X",
             pos = set_pos(0, dec=True)
 
         if joy.Y():
-            print joy.reading + "\r"
             print "Y",
             pos = set_pos(pos=1000, inc=True)
-
-        else:
-            print joy.reading + "\r"
 
         if joy.dpadUp():
             print "U",
