@@ -1,0 +1,16 @@
+keystoneJS -> admin + API
+    rpi --Post:(payload)--> rahatol.com
+    (payload) = {
+        "local_ip": <encrypted>"10.0.0.10"</enc>,
+        "external_ip": <encrypted>"73.137.158.206"</enc>,
+        "username": <encrypted>"snn"</enc>
+    }
+
+Myo unleashed -> Myo reader
+    http://developerblog.myo.com/myo-unleashed-myo-js/
+
+https://github.com/fivdi/pigpio
+    pwm with interrupts
+
+https://www.npmjs.com/package/node-xboxdrv
+    xbox wireless controller driver
