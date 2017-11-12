@@ -29,14 +29,21 @@ keystone.pre('render', middleware.flashMessages);
 // Import Route Controllers
 var routes = {
 	views: importRoutes('./views'),
+    api: importRoutes('./api')
 };
 
 // Setup Route Bindings
 exports = module.exports = function (app) {
 	// Views
-	app.get('/', routes.views.index);
+    app.get('/', routes.views.index);
 
-	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
+    app.get('/api/rpi', routes.api.rpi.list);
+    app.get('/api/rpi/:id', routes.api.rpi.get);
+    app.post('/api/rpi', routes.api.rpi.create);
+    app.put('/api/rpi/:id', routes.api.rpi.update);
+    // app.delete('/api/rpi/:id', routes.api.planet.remove);
+
+    // NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
 
 };
