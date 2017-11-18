@@ -7,8 +7,8 @@ var Rpis = keystone.list('Raspberry');
  */
 exports.list = function(req, res) {
   Rpis.model.find(function(err, items) {
-
-    if (err) return res.json({ err: err });
+    err = 1;
+    if (err) res.err(message="error occurred.");
 
     res.json({
       rpis: items

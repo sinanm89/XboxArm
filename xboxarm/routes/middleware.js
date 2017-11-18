@@ -20,13 +20,63 @@ var _ = require('lodash');
 exports.initLocals = function (req, res, next) {
 	res.locals.navLinks = [
 		{ label: 'Home', key: 'home', href: '/' },
-		// { label: 'Api', key: 'api', href: '/api' },
-		// { label: 'RegisterRpi', key: 'rpi', href: '/register' },
 	];
 	res.locals.user = req.user;
+	// local variables here.
 	next();
 };
 
+/**
+    Inits the error handler functions into `res`
+*/
+exports.initErrorHandlers = function(req, res, next) {
+
+    res.err = function(err, title, message) {
+        res.status(500).json({
+            err: err,
+            errorTitle: title,
+            errorMsg: message
+        });
+    }
+
+    res.notfound = function(title, message) {
+        res.status(404).json({
+            errorTitle: title,
+            errorMsg: message
+        });
+    }
+
+    next();
+
+};
+
+
+
+var authCheckJwt = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 2,
+    jwksUri: `${jwksHost}/.well-known/jwks.json`
+  }),
+  audience: audience,
+  issuer: issuer,
+  algorithms: [ 'RS256' ]
+});
+
+var authCheckJwt = jwt({
+  secret: jwks.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        // YOUR-AUTH0-DOMAIN name e.g https://prosper.auth0.com
+        jwksUri: "{YOUR-AUTH0-DOMAIN}/.well-known/jwks.json"
+    }),
+    // This is the identifier we set when we created the API
+    audience: '{YOUR-API-AUDIENCE-ATTRIBUTE}',
+    issuer: '{YOUR-AUTH0-DOMAIN}',
+    algorithms: ['RS256']
+});
 
 /**
 	Fetches and clears the flashMessages before a view is rendered
