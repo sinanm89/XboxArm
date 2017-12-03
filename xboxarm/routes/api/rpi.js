@@ -5,32 +5,38 @@ var Rpis = keystone.list('Raspberry');
 /**
  * List rpis
  */
-exports.list = function(req, res) {
-  Rpis.model.find(function(err, items) {
-    err = 1;
-    if (err) res.err(message="error occurred.");
+// exports.list = function(req, res) {
+//   Rpis.model.find(function(err, items) {
+//     err = 1;
+//     if (err) res.err(message="error occurred.");
 
-    res.json({
+//     res.json({
+//       rpis: items
+//     });
+
+//   });
+// }
+
+exports.list = async (req, res, next) => {
+  var items = await Rpis.model.find();
+  res.json({
       rpis: items
-    });
-
   });
 }
 
 /**
  * Get rpi by ID
  */
-exports.get = function(req, res) {
-  Rpis.model.findById(req.params.id).exec(function(err, item) {
-
-    if (err) return res.json({ err: err });
-    if (!item) return res.json('not found');
+exports.get = async (req, res, next) => {
+  // Rpis.model.findById(req.params.id).exec(function(err, item) {
+    console.log(req.params.id)
+    // if (err) return res.json({ err: err });
+    // if (!item) return res.json('not found');
 
     res.json({
-      rpi: item
+      rpi: req.params.id
     });
 
-  });
 }
 
 

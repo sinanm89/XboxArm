@@ -12,7 +12,8 @@ Raspberry.add({
     external_ip: { type: String, required: true, index: true, label: 'External IP', initial: true },
     hash: { type: String, index: true, initial: true },
     username: { type: String, initial: true, required: true, index: true },
-    password: { type: Types.Password, required: true, initial: true },
+    password: { type: String, required: true, initial: true },
+    access_token: { type: Types.Password, required: true, initial: true },
     status: {
         online: { type: Boolean, label: 'Rpi Online', index: true},
         last_online_at: { type: Date, label: 'Last Online At'}
@@ -29,5 +30,5 @@ Raspberry.add({
 /**
  * Registration
  */
-Raspberry.defaultColumns = 'online, username, hash|20%, external_ip, internal_ip, password, created_at|15%';
+Raspberry.defaultColumns = 'online, username, hash|20%, external_ip, internal_ip, access_token, password, created_at|15%';
 Raspberry.register();

@@ -50,34 +50,6 @@ exports.initErrorHandlers = function(req, res, next) {
 
 };
 
-
-
-var authCheckJwt = jwt({
-  secret: jwksRsa.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 2,
-    jwksUri: `${jwksHost}/.well-known/jwks.json`
-  }),
-  audience: audience,
-  issuer: issuer,
-  algorithms: [ 'RS256' ]
-});
-
-var authCheckJwt = jwt({
-  secret: jwks.expressJwtSecret({
-        cache: true,
-        rateLimit: true,
-        jwksRequestsPerMinute: 5,
-        // YOUR-AUTH0-DOMAIN name e.g https://prosper.auth0.com
-        jwksUri: "{YOUR-AUTH0-DOMAIN}/.well-known/jwks.json"
-    }),
-    // This is the identifier we set when we created the API
-    audience: '{YOUR-API-AUDIENCE-ATTRIBUTE}',
-    issuer: '{YOUR-AUTH0-DOMAIN}',
-    algorithms: ['RS256']
-});
-
 /**
 	Fetches and clears the flashMessages before a view is rendered
 */

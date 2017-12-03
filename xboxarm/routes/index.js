@@ -28,20 +28,20 @@ keystone.pre('routes', middleware.initLocals);
 keystone.pre('render', middleware.flashMessages);
 
 
-// // Handle 404 errors
-// keystone.set('404', function(req, res, next) {
-//     res.notfound();
-// });
+// Handle 404 errors
+keystone.set('404', function(req, res, next) {
+    res.notfound();
+});
 
-// // Handle other errors
-// keystone.set('500', function(err, req, res, next) {
-//     var title, message;
-//     if (err instanceof Error) {
-//         message = err.message;
-//         err = err.stack;
-//     }
-//     res.err(err, title, message);
-// });
+// Handle other errors
+keystone.set('500', function(err, req, res, next) {
+    var title, message;
+    if (err instanceof Error) {
+        message = err.message;
+        err = err.stack;
+    }
+    res.err(err, title, message);
+});
 
 // Import Route Controllers
 var routes = {
@@ -49,13 +49,21 @@ var routes = {
     api: importRoutes('./api')
 };
 
+const asyncMiddleware = fn =>
+  (req, res, next) => {
+    Promise.resolve(fn(req, res, next))
+      .catch(next);
+  };
+
+var Rpis = keystone.list('Raspberry');
+
 // Setup Route Bindings
 exports = module.exports = function (app) {
 	// Views
     app.get('/', routes.views.index);
 
-    app.get('/api/rpi', routes.api.rpi.list);
-    app.get('/api/rpi/:id', routes.api.rpi.get);
+    app.get('/api/rpi', asyncMiddleware(routes.api.rpi.list));
+    app.get('/api/rpi/:id', asyncMiddleware(routes.api.rpi.get));
     app.post('/api/rpi', routes.api.rpi.create);
     app.put('/api/rpi/:id', routes.api.rpi.update);
     // app.delete('/api/rpi/:id', routes.api.planet.remove);

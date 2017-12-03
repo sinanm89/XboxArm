@@ -11,6 +11,7 @@
     "lodash": "^4.13.1",
     "node-sass": "4.5.0",
     "node-sass-middleware": "0.11.0",
+    "openpgp": "^2.5.14",
     "pug": "2.0.0-beta11"
   },
   "devDependencies": {
