@@ -58,7 +58,27 @@ const fs = require('fs');
 const fs_encoding = "utf-8";
 openpgp.initWorker({ path:'openpgp.worker.js' }) // set the relative web worker path
 
-var content;
+class Chain {
+    constructor(links) {
+        this.links = links || [];
+    }
+
+    appendLink(link) {
+        this.links.append(link);
+    }
+}
+
+class ChainLink {
+    constructor(pub, ip, rid=null, priv=null) {
+        this.pub = pub;
+        this.rid = rid;
+        this.ip = ip;
+        this.online = true;
+        this.data = null;
+        this.priv = priv;
+    }
+}
+
 
 function readdirAsync(path) {
 
@@ -78,5 +98,5 @@ function readdirAsync(path) {
 (async () => {
     var pubkey = await readdirAsync("/Users/snn/.ssh/snn_test.asc");
     var privkey = await readdirAsync("/Users/snn/.ssh/snn_testp.asc");
-
+    new ChainLink()
 })();
