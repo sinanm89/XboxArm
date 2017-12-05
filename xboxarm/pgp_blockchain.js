@@ -1,3 +1,4 @@
+"use strict";
 /*
 
 architecture :
@@ -53,10 +54,13 @@ xqW/oVU2mmHn0KfL9Cdk3a87yjsrdd19ywJu+BlowPePfUdQ8zqKwIGz9KhptofL
 
 */
 
-var openpgp = require('openpgp'); // use as CommonJS, AMD, ES6 module or via window.openpgp
+const openpgp = require('openpgp'); // use as CommonJS, AMD, ES6 module or via window.openpgp
+const fetch = require('node-fetch');
 const fs = require('fs');
+
 const fs_encoding = "utf-8";
-openpgp.initWorker({ path:'openpgp.worker.js' }) // set the relative web worker path
+
+openpgp.initWorker({ path:'openpgp.worker.js' }); // set the relative web worker path
 
 class Chain {
     constructor(links) {
@@ -69,13 +73,25 @@ class Chain {
 }
 
 class ChainLink {
-    constructor(pub, ip, rid=null, priv=null) {
+    constructor(pub, ip, priv=null) {
         this.pub = pub;
+        this.last_updated = Date.now();
         this.rid = rid;
         this.ip = ip;
         this.online = true;
         this.data = null;
         this.priv = priv;
+    }
+
+    toJson() {
+      return {
+        pub: this.pub,
+        rid: this.rid,
+        ip: this.ip,
+        online: this.online,
+        data: this.data,
+        // priv: this.priv,
+      };
     }
 }
 
@@ -94,15 +110,46 @@ function readdirAsync(path) {
         // console.log(error);
         reject(error);
       } else {
-        console.log(result);
+        // console.log(result);
         resolve(result);
       }
     });
   });
 }
 
+function encrypt_private_data(data){
+  // encrypt the private data here.
+  return data;
+}
+
+async get_allData(){
+
+}
+
 asyncMiddleware(async () => {
-    var pubkey = await readdirAsync("/Users/snn/.ssh/snn_test.asc");
-    var privkey = await readdirAsync("/Users/snn/.ssh/snn_testp.asc");
-    // new ChainLink()
+    let pubkey = await readdirAsync("/Users/snn/.ssh/snn_test.asc");
+    let privkey = await readdirAsync("/Users/snn/.ssh/snn_testp.asc");
+
+    let url = "https://freegeoip.net/json/";
+
+    const response = await fetch(url);
+    const json_data = await response.json();
+
+    console.log(json_data);
+
+    let private_data = {
+      lat: json_data.latitude,
+      long: json_data.longitude
+    };
+    private_data = encrypt_private_data(private_data);
+
+    let link_data = {
+      pub: pubkey,
+      // priv: privkey,
+      ip: json_data.ip,
+      data: private_data
+    };
+    let chain_link = new ChainLink(link_data);
+
+
   })();
