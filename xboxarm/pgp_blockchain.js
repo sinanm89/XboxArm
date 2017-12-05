@@ -79,6 +79,12 @@ class ChainLink {
     }
 }
 
+const asyncMiddleware = fn =>
+  (req, res, next) => {
+    Promise.resolve(fn(req, res, next))
+      .catch(next);
+  };
+
 
 function readdirAsync(path) {
 
@@ -95,8 +101,8 @@ function readdirAsync(path) {
   });
 }
 
-(async () => {
+asyncMiddleware(async () => {
     var pubkey = await readdirAsync("/Users/snn/.ssh/snn_test.asc");
     var privkey = await readdirAsync("/Users/snn/.ssh/snn_testp.asc");
-    new ChainLink()
-})();
+    // new ChainLink()
+  })();
