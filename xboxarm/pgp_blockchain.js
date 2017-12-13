@@ -83,6 +83,17 @@ class ChainLink {
         this.priv = priv;
     }
 
+	async send_data_to_node() {
+		let self_data = this.toJson();
+		let payload = new FormData(self_data);
+		
+		let response = await fetch(
+			parent_node_url, 
+			body=payload
+		);
+		this.all_data = response.data;
+		await write_all_data(this.all_data);
+	}
     toJson() {
       return {
         pub: this.pub,
@@ -122,7 +133,7 @@ function encrypt_private_data(data){
   return data;
 }
 
-async get_allData(){
+async get_all_data(){
 
 }
 
@@ -150,6 +161,9 @@ asyncMiddleware(async () => {
       data: private_data
     };
     let chain_link = new ChainLink(link_data);
+	
+	await chain_link
+	all_data = await get_all_data();
 
 
   })();
