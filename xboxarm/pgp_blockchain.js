@@ -73,14 +73,14 @@ class Chain {
 }
 
 class ChainLink {
-    constructor(pub, ip, priv=null) {
-        this.pub = pub;
+    constructor(args) {
+        this.pub = args.pub;
         this.last_updated = Date.now();
-        this.rid = rid;
-        this.ip = ip;
+        this.rid = null;
+        this.ip = args.ip;
         this.online = true;
-        this.data = null;
-        this.priv = priv;
+        this.data = args.data;
+        // this.priv = args.priv;
     }
 
     toJson() {
@@ -122,7 +122,7 @@ function encrypt_private_data(data){
   return data;
 }
 
-async get_allData(){
+async function get_allData(){
 
 }
 
@@ -135,21 +135,19 @@ asyncMiddleware(async () => {
     const response = await fetch(url);
     const json_data = await response.json();
 
-    console.log(json_data);
-
     let private_data = {
       lat: json_data.latitude,
       long: json_data.longitude
     };
-    private_data = encrypt_private_data(private_data);
 
+    private_data = encrypt_private_data(private_data);
+    console.log(private_data);
     let link_data = {
       pub: pubkey,
-      // priv: privkey,
       ip: json_data.ip,
       data: private_data
     };
     let chain_link = new ChainLink(link_data);
-
+    console.log(chain_link);
 
   })();
